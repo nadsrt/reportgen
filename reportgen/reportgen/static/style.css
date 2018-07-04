@@ -1,0 +1,17 @@
+html {
+  font-family: 'Rubik', sans-serif;
+  background: #457B9D !important;
+  padding: 1rem;
+}
+
+body {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2%;
+  background: white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #377ba8;
+  margin: 1rem 0;
+}
