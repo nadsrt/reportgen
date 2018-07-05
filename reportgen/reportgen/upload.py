@@ -40,25 +40,25 @@ def upload_file():
 @bp.route('/results')
 def results(df):
 
+
     # change the appointment date from string into date
     df['Appointment Date'] = pd.to_datetime(df['Appointment Date'], dayfirst=True)
     
     # separate the first two digits of the zip code
     df['Postal Code'] = df['Postal Code'].astype('str')
     df['2Digit'] = df['Postal Code'].str[:2]
-    
+        
     # grouping by 2 digits postal code
     twozip = df.groupby(['2Digit']).size()
     twozip = twozip.reset_index()
     twozip = twozip.reset_index()
     twozip = twozip.sort_values(by=[0], ascending=False).head(10)
-    labels1 = twozip['2Digit'].tolist()
-    values1 = twozip[0].tolist()
-    color1 =  [ "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA","#ABCDEF", "#DDDDDD", "#ABCABC",  "#C7AA74", "#957964" ]
+    lbl1 = twozip['2Digit'].tolist()
+    val1 = twozip[0].tolist()
 
     # grouping by month
     countMth = df.groupby(pd.Grouper(key='Appointment Date', freq='M')).size()
-    values2 = countMth.tolist()
-    labels2 = ["January","February","March","April","May","June","July","August","September","October","November","December"]
-
-    return render_template('upload/results.html', set=zip(values1,labels1,color1),values=values2,labels=labels2)
+    val2 = countMth.tolist()
+    lbl2 = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+    
+    return render_template('upload/results.html', lbl1=lbl1,val1=val1,val2=val2,lbl2=lbl2)
