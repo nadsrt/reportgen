@@ -6,7 +6,7 @@ html {
 
 body {
   max-width: 960px;
-  margin: 0 auto;
+  margin: 0 auto !important;
   padding: 2%;
   background: white;
 }
@@ -14,4 +14,42 @@ body {
 h1, h2, h3, h4, h5, h6 {
   color: #377ba8;
   margin: 1rem 0;
+}
+
+p {
+  font-size: 13px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid lightgray;
+}
+
+nav {
+  background: #A8DADC;
+  display: flex;
+  align-items: center;
+  padding: 0.5px 5px;
+}
+
+nav h1 {
+  flex: auto;
+  margin: 0;
+}
+
+nav h1 a {
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+}
+
+nav ul  {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a, nav ul li span, header .action {
+  display: block;
+  padding: 0.5rem;
 }

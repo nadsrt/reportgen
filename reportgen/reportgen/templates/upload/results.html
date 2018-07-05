@@ -5,13 +5,24 @@
 {% endblock %}
 
 {% block content %}
-  <p>Results</p>
+  <div class="row">
+    <div class="col-md-6">
+      <h2> {{ lbl1 | first }} </h2>
+      <p> Busiest district </p>
+    </div>
+    <div class="col-md-6">
+      <h2> {{ val1 | first }} </h2>
+      <p> Highest number of patients {{ reg1 }}</p>
+    </div>
+  </div>
+  <br>
   <!-- bar chart canvas element -->
-  <canvas id="barchart" width="600" height="400"></canvas>
+  <canvas id="barchart"></canvas>
   <script>
-    // bar chart data
-     var barData = {
-         labels : [{% for item in labels %}
+  var config = {
+     type: 'bar',
+     data: {
+         labels : [{% for item in lbl2 %}
                         "{{item}}",
                     {% endfor %}],
          datasets : [
@@ -19,55 +30,46 @@
                   fillColor: "rgba(151,187,205,0.2)",
                   strokeColor: "rgba(151,187,205,1)",
                   pointColor: "rgba(151,187,205,1)",
-               data : [{% for item in values %}
+               data : [{% for item in val2 %}
                             {{item}},
                           {% endfor %}]
             }
             ]
          }
-
-         // get bar chart canvas
-         var mychart = document.getElementById("barchart").getContext("2d");
-
-         steps = 10
-         max = 250
-         // draw bar chart
-         new Chart(mychart).Bar(barData, {
-              scaleOverride: true,
-              scaleSteps: steps,
-              scaleStepWidth: Math.ceil(max / steps),
-              scaleStartValue: 0,
-              scaleShowVerticalLines: true,
-              scaleShowGridLines : true,
-              barShowStroke : true,
-              scaleShowLabels: true
-         });
-
-    </script>
-    <!-- pie chart canvas element -->
+   };
+  // draw bar chart
+  (function() {
+    var ctx = document.getElementById("barchart").getContext("2d");
+    window.myBar = new Chart(ctx, config);
+  })()
+  </script>
+    <!-- bar chart 2 canvas element -->
     <br>
-    <canvas id="piechart" width="600" height="400"></canvas>
+    <canvas id="barchart2"></canvas>
     <script>
-      // pie chart data
-      var pieData = [
-                  {% for item,label,colors in set %}
-                      {
-                          value: {{item}},
-                          label: "{{label}}",
-                          color : "{{colors}}"
-                      },
-                      {% endfor %}
-
-
-               ];
-
-         // get bar chart canvas
-         var mychart = document.getElementById("piechart");
-
-         steps = 10
-         max = 10
-         // draw pie chart
-        new Chart(document.getElementById("piechart").getContext("2d")).Pie(pieData);
-      </script>
+     var config = {
+        type: 'horizontalBar',
+        data: {
+            labels : [{% for item in lbl1 %}
+                           "{{item}}",
+                       {% endfor %}],
+            datasets : [
+               {
+                     fillColor: "rgba(151,187,205,0.2)",
+                     strokeColor: "rgba(151,187,205,1)",
+                     pointColor: "rgba(151,187,205,1)",
+                  data : [{% for item in val1 %}
+                               {{item}},
+                             {% endfor %}]
+               }
+               ]
+            }
+      };
+   // draw bar chart
+   (function() {
+     var ctx = document.getElementById("barchart2").getContext("2d");
+     window.myBar = new Chart(ctx, config);
+   })()
+    </script>
   </div>
 {% endblock %}
