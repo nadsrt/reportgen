@@ -2,7 +2,7 @@
 """
 Created on Tue Jul  3 09:56:47 2018
 
-@author: M Project
+@author: Nadia Desratri Enmayani
 """
 
 import functools
@@ -47,7 +47,7 @@ def results(df):
     # separate the first two digits of the zip code
     df['Postal Code'] = df['Postal Code'].astype('str')
     df['2Digit'] = df['Postal Code'].str[:2]
-        
+    
     # grouping by 2 digits postal code
     twozip = df.groupby(['2Digit']).size()
     twozip = twozip.reset_index()
@@ -61,4 +61,12 @@ def results(df):
     val2 = countMth.tolist()
     lbl2 = ["January","February","March","April","May","June","July","August","September","October","November","December"]
     
-    return render_template('upload/results.html', lbl1=lbl1,val1=val1,val2=val2,lbl2=lbl2)
+    # stats
+    mean = countMth.mean()
+    stdev = countMth.std()
+    stat = {
+            "mean": mean,
+            "stdev": stdev
+     }
+    
+    return render_template('upload/results.html', lbl1=lbl1,val1=val1,val2=val2,lbl2=lbl2, stat=stat)
