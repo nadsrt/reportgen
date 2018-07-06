@@ -6,70 +6,147 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-md-6">
-      <h2> {{ lbl1 | first }} </h2>
-      <p> Busiest district </p>
+    <div class="col-md-12 number-holder">
+      <h1 class="number"> {{ val2 | sum }} </h1>
+      <h5 class="number-caption"> Total number of patients </h5>
     </div>
-    <div class="col-md-6">
-      <h2> {{ val1 | first }} </h2>
-      <p> Highest number of patients {{ reg1 }}</p>
+  </div>
+  <div class="row">
+    <div class="col-md-6 number-holder">
+      <h2 class="number"> {{ lbl1 | first }} </h2>
+      <p class="number-caption"> Top district </p>
+    </div>
+    <div class="col-md-6 number-holder">
+      <h2 class="number"> {{ val1 | first }} </h2>
+      <p class="number-caption">Highest number of patients</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 number-holder">
+      {% if stat.mean > 40 %}
+        <h2 class="number" style="color: green;">
+      {% elif stat.mean > 20 %}
+        <h2 class="number" style="color: yellow;">
+      {% else %}
+        <h2 class="number" style="color: red;">
+      {% endif %}
+        {{ stat.mean|round(1, 'floor') }}</h2>
+      <p class="number-caption"> Average number of patients per month </p>
+    </div>
+    <div class="col-md-6 number-holder">
+      {% if stat.stdev > 40 %}
+        <h2 class="number" style="color: red;">
+      {% elif stat.stdev > 20 %}
+        <h2 class="number" style="color: yellow;">
+      {% else %}
+        <h2 class="number" style="color: green;">
+      {% endif %}
+        {{ stat.stdev|round(1, 'floor') }}</h2>
+      <p class="number-caption"> Standard deviation patients per month </p>
     </div>
   </div>
   <br>
   <!-- bar chart canvas element -->
   <canvas id="barchart"></canvas>
+  <br>
+  <canvas id="barchart2"></canvas>
   <script>
-  var config = {
-     type: 'bar',
-     data: {
-         labels : [{% for item in lbl2 %}
-                        "{{item}}",
-                    {% endfor %}],
-         datasets : [
-            {
-                  fillColor: "rgba(151,187,205,0.2)",
-                  strokeColor: "rgba(151,187,205,1)",
-                  pointColor: "rgba(151,187,205,1)",
-               data : [{% for item in val2 %}
-                            {{item}},
-                          {% endfor %}]
-            }
-            ]
-         }
-   };
-  // draw bar chart
-  (function() {
-    var ctx = document.getElementById("barchart").getContext("2d");
-    window.myBar = new Chart(ctx, config);
-  })()
+    Chart.defaults.global.defaultFontColor = 'black';
+    Chart.defaults.global.defaultFontFamily = 'Rubik';
+
+    var config1 = {
+       type: 'line',
+       data: {
+           labels : [{% for item in lbl2 %}
+                          "{{item}}",
+                      {% endfor %}],
+           datasets : [
+              {
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderDash: [5, 5],
+                    pointBackgroundColor: "#55bae7",
+                    pointBorderColor: "#55bae7",
+                    pointHoverBackgroundColor: "#55bae7",
+                    pointHoverBorderColor: "#55bae7",
+                    data : [{% for item in val2 %}
+                              {{item}},
+                            {% endfor %}]
+              }
+              ]
+           },
+       options: {
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: 'Number of Patients Per Month (2018)',
+            fontSize: 20
+          },
+          scales: {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of Patients',
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Month',
+              }
+            }],
+          }
+        },
+     };
+
+    var config2 = {
+       type: 'bar',
+       data: {
+           labels : [{% for item in lbl1 %}
+                          "{{item}}",
+                      {% endfor %}],
+           datasets : [
+              {
+                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                 data : [{% for item in val1 %}
+                              {{item}},
+                            {% endfor %}]
+              }
+              ]
+           },
+           options: {
+              legend: {
+                display: false
+              },
+              title: {
+                display: true,
+                text: 'Top 10 District in Singapore',
+                fontSize: 20
+              },
+              scales: {
+                yAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Number of Patients',
+                  }
+                }],
+                xAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Zip Code (1st Two Digit)',
+                  }
+                }],
+              }
+            },
+     };
+
+     // draw bar chart
+    (function() {
+      var ctx1 = document.getElementById("barchart").getContext("2d");
+      var ctx2 = document.getElementById("barchart2").getContext("2d");
+      window.myBar = new Chart(ctx1, config1);
+      window.myBar2 = new Chart(ctx2, config2);
+    })()
   </script>
-    <!-- bar chart 2 canvas element -->
-    <br>
-    <canvas id="barchart2"></canvas>
-    <script>
-     var config = {
-        type: 'horizontalBar',
-        data: {
-            labels : [{% for item in lbl1 %}
-                           "{{item}}",
-                       {% endfor %}],
-            datasets : [
-               {
-                     fillColor: "rgba(151,187,205,0.2)",
-                     strokeColor: "rgba(151,187,205,1)",
-                     pointColor: "rgba(151,187,205,1)",
-                  data : [{% for item in val1 %}
-                               {{item}},
-                             {% endfor %}]
-               }
-               ]
-            }
-      };
-   // draw bar chart
-   (function() {
-     var ctx = document.getElementById("barchart2").getContext("2d");
-     window.myBar = new Chart(ctx, config);
-   })()
-    </script>
-  </div>
-{% endblock %}
+  {% endblock %}
