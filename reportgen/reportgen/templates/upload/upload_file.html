@@ -5,8 +5,20 @@
 {% endblock %}
 
 {% block content %}
-  <p>Excel file upload</p>
-  <form action="" method=post enctype=multipart/form-data>
-  <p><input type=file name=file accept=".xlsx"><input type=submit value=Upload>
-  </form>
+  <p>Please upload Excel file (.xlsx) below.</p>
+  <div class="input-group mb-3">
+    <form action="" method=post enctype=multipart/form-data>
+      <input type=file name=file class="custom-file-input" id="inputGroupFile02" accept=".xlsx">
+      <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+      <button class="btn btn-success input-group-btn upload" type=submit>Upload</button>
+    </form>
+  </div>
+  <script>
+        $('#inputGroupFile02').on('change',function(){
+          //get the file name
+          var fileName = $(this).val().split('\\').pop();;
+          //replace the "Choose a file" label
+          $(this).next('.custom-file-label').html(fileName);
+        })
+  </script>
 {% endblock %}
