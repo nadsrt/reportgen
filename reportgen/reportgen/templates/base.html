@@ -1,23 +1,26 @@
 <!doctype html>
 <html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %} - Report Generation</title>
     <script src="{{ url_for('static', filename='Chart.bundle.js')}}"></script>
     <script src="{{ url_for('static', filename='Chart.bundle.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='jquery.min.js')}}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Rubik:medium,regular" rel="stylesheet">
   </head>
   <body>
-    <nav class="nav">
-      <h3>Report Generation</h3>
-      <ul>
-          <li class="justify-content-end nav-item"><a class="nav-link active"href="{{ url_for('upload.upload_file') }}">Upload</a>
+    <nav class="row container-fluid">
+      <h4 class="col-md-4">Report Generation</h4>
+      <ul class="d-flex justify-content-end col-md-8">
+          <li class="nav-item p-2"><a class="nav-link active"href="{{ url_for('upload.upload_file') }}">Upload</a>
       </ul>
     </nav>
     <section class="content">
-      <header>
+      <header class = "container-fluid">
         {% block header %}{% endblock %}
       </header>
       {% for message in get_flashed_messages() %}
