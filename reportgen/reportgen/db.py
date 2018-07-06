@@ -2,7 +2,7 @@
 """
 Created on Tue Jul  3 09:28:53 2018
 
-@author: M Project
+@author: Nadia Desratri Enmayani
 """
 
 import sqlite3
